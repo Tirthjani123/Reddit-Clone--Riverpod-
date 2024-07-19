@@ -53,87 +53,92 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(communityControllerProvider);
+    final currTheme = ref.watch(themeNotifierProvider);
     return ref.watch(getCommunityByNameProvider(widget.name)).when(
-        data: (community) => isLoading? const Loader():Scaffold(
-              backgroundColor: Pallete.darkModeAppTheme.backgroundColor,
-              appBar: AppBar(
-                title: const Text('Edit Community'),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: InkWell(
-                        onTap: () {
-                          save(community);
-                        },
-                        child: Text(
-                          'Save',
-                          style: TextStyle(color: Pallete.blueColor),
-                        )),
-                  )
-                ],
-              ),
-              body: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 200,
-                      child: Stack(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              selectBannerImage();
-                            },
-                            child: DottedBorder(
-                              borderType: BorderType.RRect,
-                              dashPattern: [10, 4],
-                              radius: Radius.circular(10),
-                              color: Colors.white,
-                              strokeCap: StrokeCap.round,
-                              child: Container(
-                                width: double.infinity,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: bannerFile != null
-                                    ? Image.file(bannerFile!)
-                                    : community.banner.isEmpty ||
-                                            community.banner ==
-                                                Constants.bannerDefault
-                                        ? const Icon(
-                                            Icons.camera_alt_outlined,
-                                            size: 40,
-                                          )
-                                        : Image.network('${community.banner}'),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 20,
-                            left: 20,
-                            child: InkWell(
-                              onTap: () {
-                                selectProfileImage();
-                              },
-                              child: profileFile != null
-                                  ? CircleAvatar(
-                                      radius: 32,
-                                      backgroundImage: FileImage(profileFile!),
-                                    )
-                                  : CircleAvatar(
-                                      radius: 32,
-                                      backgroundImage:
-                                          NetworkImage(community.avatar),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+        data: (community) => isLoading
+            ? const Loader()
+            : Scaffold(
+                backgroundColor: currTheme.backgroundColor,
+                appBar: AppBar(
+                  title: const Text('Edit Community'),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: InkWell(
+                          onTap: () {
+                            save(community);
+                          },
+                          child: Text(
+                            'Save',
+                            style: TextStyle(color: Pallete.blueColor),
+                          )),
+                    )
                   ],
                 ),
+                body: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                selectBannerImage();
+                              },
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                dashPattern: [10, 4],
+                                radius: Radius.circular(10),
+                                color: currTheme.textTheme.bodyLarge!.color!,
+                                strokeCap: StrokeCap.round,
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: bannerFile != null
+                                      ? Image.file(bannerFile!)
+                                      : community.banner.isEmpty ||
+                                              community.banner ==
+                                                  Constants.bannerDefault
+                                          ? const Icon(
+                                              Icons.camera_alt_outlined,
+                                              size: 40,
+                                            )
+                                          : Image.network(
+                                              '${community.banner}'),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 20,
+                              left: 20,
+                              child: InkWell(
+                                onTap: () {
+                                  selectProfileImage();
+                                },
+                                child: profileFile != null
+                                    ? CircleAvatar(
+                                        radius: 32,
+                                        backgroundImage:
+                                            FileImage(profileFile!),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 32,
+                                        backgroundImage:
+                                            NetworkImage(community.avatar),
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
         error: (error, stackTrace) => ErrorText(error: error.toString()),
         loading: () => Loader());
   }

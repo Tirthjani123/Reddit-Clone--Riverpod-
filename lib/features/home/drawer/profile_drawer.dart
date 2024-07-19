@@ -8,10 +8,15 @@ import 'package:reddit_clone/theme/pallet.dart';
 
 class ProfileDrawer extends ConsumerWidget {
   const ProfileDrawer({super.key});
-  void logOut(WidgetRef ref,BuildContext context) async {
+
+  void logOut(WidgetRef ref, BuildContext context) async {
     ref.read(authControllerProvider.notifier).logOut();
   }
-  
+
+  void toggleTheme(WidgetRef ref)async {
+    ref.read(themeNotifierProvider.notifier).toggle();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
@@ -41,8 +46,8 @@ class ProfileDrawer extends ConsumerWidget {
               title: Text('My Profile'),
             ),
             ListTile(
-              onTap: (){
-                logOut(ref,context);
+              onTap: () {
+                logOut(ref, context);
               },
               leading: Icon(
                 Icons.logout,
@@ -51,8 +56,8 @@ class ProfileDrawer extends ConsumerWidget {
               title: Text('Logout'),
             ),
             Switch(
-                value: true,
-                onChanged: (val) {},
+              value: ref.watch(themeNotifierProvider.notifier).getMode()==ThemeMode.dark,
+              onChanged: (val) => toggleTheme(ref),
               activeColor: Colors.green,
             )
           ],

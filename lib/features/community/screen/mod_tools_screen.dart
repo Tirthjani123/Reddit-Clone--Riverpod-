@@ -24,7 +24,7 @@ class ModToolsScreen extends StatelessWidget {
 
           ListTile(
             leading: Icon(Icons.edit),
-            title: Text('Edit Moderators'),
+            title: Text('Edit Community'),
             onTap: (){
               navigateToEditCommunity(context,name);
             },

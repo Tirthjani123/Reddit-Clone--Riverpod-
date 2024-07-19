@@ -93,6 +93,7 @@ class CommunityScreen extends ConsumerWidget {
                       onPressed: () {
                         joinCommunity(community, context, ref);
                       },
+                      //
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
